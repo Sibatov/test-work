@@ -5,7 +5,7 @@ import {getPackageList} from '../../API';
 import {clearData} from './data';
 
 // styles
-import {Container, Content, PaginationContainer, Title, Toolbar, Total} from './styles';
+import {Container, Content, Empty, PaginationContainer, Title, Toolbar, Total} from './styles';
 
 // types
 import {PackageListI, PackageListProps} from './types';
@@ -27,8 +27,8 @@ const PackageList: FC<PackageListProps> = ({className}) => {
 
 	const packageListQuery: PackageListI = (text, from) => {
 		getPackageList(text, 10, from)
-			.then(result => {
-				const data = clearData(result?.data.objects) || [];
+			.then((result) => {
+				const data = clearData(result.data.objects) || [];
 				setState((prevState) => ({
 					...prevState,
 					loading: false,
@@ -44,12 +44,9 @@ const PackageList: FC<PackageListProps> = ({className}) => {
 	};
 
 	const paginationHandle = (page: 'prev' | 'next') => {
-		if (page === 'prev') {
-			const from = state.from > 10 ? state.from - 10 : state.from;
-			setState((prevState) => ({...prevState, loading: true, from}));
-		}
-		setState((prevState) => ({...prevState, loading: true, from: state.from + 10}));
-		packageListQuery(state.text, state.from + 10);
+		const from = page === 'prev' ? state.from - 10 : state.from + 10;
+		setState((prevState) => ({...prevState, loading: true, from}));
+		packageListQuery(state.text, from );
 	};
 
 	return (
@@ -72,14 +69,28 @@ const PackageList: FC<PackageListProps> = ({className}) => {
 			</Toolbar>
 
 			<Content>
+				{(!state.data.length && !state.loading) && <Empty>No packages to show</Empty>}
 				{state.loading ? <Loading /> : <Table data={state.data} />}
 			</Content>
 
 			{state.data.length ? (
 				<PaginationContainer>
-					<Button iconOnly type="button" icon="prev" variant="rounded" disabled={state.from <= 10} onClick={() => paginationHandle('prev')} />
+					<Button
+						iconOnly
+						type="button"
+						icon="prev"
+						variant="rounded"
+						disabled={state.from < 10}
+						onClick={() => paginationHandle('prev')}
+					/>
 					<Total>{state.total}</Total>
-					<Button iconOnly type="button" icon="next" variant="rounded" onClick={() => paginationHandle('next')} />
+					<Button
+						iconOnly
+						type="button"
+						icon="next"
+						variant="rounded"
+						onClick={() => paginationHandle('next')}
+					/>
 				</PaginationContainer>
 			): null}
 		</Container>

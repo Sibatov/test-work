@@ -59,15 +59,7 @@ export const Thead = styled.thead`
 `;
 
 export const Tbody = styled.tbody`
-  //background-color: ${({theme: {palettes}}) => palettes.OldAsphalt.L30 };
   border-radius: 8px;
-`;
-
-export const Empty = styled.div`
-  ${({theme}) => theme.fonts.Sizings.par1};
-  color: ${({theme}) => theme.colors.Woodsmoke};
-  padding-top: 48px;
-  text-align: center;
 `;
 
 export const IconsWrap = styled.div`

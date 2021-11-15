@@ -31,7 +31,11 @@ const columns = [
     Header: 'Publisher',
     accessor: 'publisher',
     width: 100,
-    Cell: ({value}) => value && value.username && <a href={`mailto:${value?.email || "test@test.test"}`} target="_blank">{value.username}</a>,
+    Cell: ({value}) => value && value.username && (
+      <a href={`mailto:${value?.email || "test@test.test"}`} target="_blank" rel="noreferrer noopener">
+        {value.username}
+      </a>
+    ),
   },
   {
     Header: 'Version',
@@ -41,7 +45,7 @@ const columns = [
   {
     Header: 'Links',
     accessor: 'links',
-    width:100,
+    width:150,
     disableSortBy: true,
     Cell: ({value}) => (
       <LinksContainer>

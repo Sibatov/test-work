@@ -10,7 +10,7 @@ export const getPackageList = async (text: string, size: number, from: number) =
 				size,
 				from
 			}
-		});
+		}) as any;
 	} catch (error) {
 		console.error(error);
 		return error;

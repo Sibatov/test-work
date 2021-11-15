@@ -5,10 +5,10 @@ import {getPackageList} from '../../API';
 import {clearData} from './data';
 
 // styles
-import {Container, Content, Title, Toolbar} from './styles';
+import {Container, Content, PaginationContainer, Title, Toolbar, Total} from './styles';
 
 // types
-import {PackageListProps} from './types';
+import {PackageListI, PackageListProps} from './types';
 
 // components
 import Table from '../Table';
@@ -25,19 +25,31 @@ const PackageList: FC<PackageListProps> = ({className}) => {
 		total: 0,
 	});
 
-	const clickHandle = () => {
-		const {text, from} = state;
-		setState((prevState) => ({...prevState, loading: true, from: from + 10}));
+	const packageListQuery: PackageListI = (text, from) => {
 		getPackageList(text, 10, from)
-			.then(r => {
-				const data = clearData(r?.data.objects) || [];
+			.then(result => {
+				const data = clearData(result?.data.objects) || [];
 				setState((prevState) => ({
 					...prevState,
 					loading: false,
-					total: r?.data.total,
+					total: result?.data.total,
 					data,
 				}));
 			});
+	}
+
+	const clickHandle = () => {
+		setState((prevState) => ({...prevState, loading: true}));
+		packageListQuery(state.text, 0);
+	};
+
+	const paginationHandle = (page: 'prev' | 'next') => {
+		if (page === 'prev') {
+			const from = state.from > 10 ? state.from - 10 : state.from;
+			setState((prevState) => ({...prevState, loading: true, from}));
+		}
+		setState((prevState) => ({...prevState, loading: true, from: state.from + 10}));
+		packageListQuery(state.text, state.from + 10);
 	};
 
 	return (
@@ -62,6 +74,14 @@ const PackageList: FC<PackageListProps> = ({className}) => {
 			<Content>
 				{state.loading ? <Loading /> : <Table data={state.data} />}
 			</Content>
+
+			{state.data.length ? (
+				<PaginationContainer>
+					<Button iconOnly type="button" icon="prev" variant="rounded" disabled={state.from <= 10} onClick={() => paginationHandle('prev')} />
+					<Total>{state.total}</Total>
+					<Button iconOnly type="button" icon="next" variant="rounded" onClick={() => paginationHandle('next')} />
+				</PaginationContainer>
+			): null}
 		</Container>
 	);
 };

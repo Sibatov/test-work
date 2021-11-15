@@ -13,5 +13,6 @@ export const getPackageList = async (text: string, size: number, from: number) =
 		});
 	} catch (error) {
 		console.error(error);
+		return error;
 	}
 }

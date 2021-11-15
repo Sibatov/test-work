@@ -22,3 +22,5 @@ export interface Package {
 	publisher?: Publisher;
 	version?: string;
 }
+
+export type PackageListI = (text: string, from: number) => void;

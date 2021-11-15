@@ -12,6 +12,7 @@ export const Title = styled.h1`
 
 export const Toolbar = styled.div`
 	display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 `;
 
@@ -21,4 +22,14 @@ export const Content = styled.div`
 	margin-top: 30px;
 	border-radius: 8px;
   background-color: ${({theme: {colors}}) => colors.Iron };
+`;
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const Total = styled.p`
+  ${({theme}) => theme.fonts.Sizings.Normal};
+  margin: 0 10px;
 `;

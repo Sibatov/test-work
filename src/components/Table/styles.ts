@@ -15,6 +15,7 @@ export const TableContainer = styled.table`
 export const Row = styled.tr`
   padding: 10px;
   border-radius: 8px;
+  text-align: left;
   
   &:last-of-type {
     margin-bottom: 0;
@@ -41,7 +42,6 @@ export const Thead = styled.thead`
   margin-bottom: 5px;
   margin-top: 5px;
   border-radius: 8px;
-  //background-color: ${({theme: {palettes}}) => palettes.OldAsphalt.L10 };
 
   ${Row} {
     &:last-of-type {
@@ -93,6 +93,14 @@ export const ButtonStyled = styled.button`
   svg {
     width: 100%;
     height: 100%;
+  }
+`;
+
+export const LinksContainer = styled.div`
+  display: flex;
+  
+  button {
+    margin-right: 5px;
   }
 `;
 

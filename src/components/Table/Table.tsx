@@ -6,47 +6,56 @@ import {getFormattedDate} from "../PackageList/data";
 
 // components
 import Icon from '../Icon';
+import Button from "../Button";
 
 // types
 import {TableProps} from './types';
+
 import {Package} from "../PackageList/types";
 
 // styles
-import {TableContainer, Thead, Tbody, Row, Cell, Main, IconsWrap, ButtonStyled} from './styles';
+import {TableContainer, Thead, Tbody, Row, Cell, Main, IconsWrap, ButtonStyled, LinksContainer} from './styles';
 
 const columns = [
   {
     Header: 'Package Name',
     accessor: 'name',
-    // width: '150px'
+    width: 150
   },
   {
     Header: 'Description',
     accessor: 'description',
-    // width: '250px',
+    width: 300,
   },
   {
     Header: 'Publisher',
     accessor: 'publisher',
-    // width: '250px',
-    Cell: () => <p>Links</p>
+    width: 100,
+    Cell: ({value}) => value && value.username && <a href={`mailto:${value?.email || "test@test.test"}`} target="_blank">{value.username}</a>,
   },
   {
     Header: 'Version',
     accessor: 'version',
-    // width: '80px'
+    width: 80
   },
   {
     Header: 'Links',
     accessor: 'links',
-    // width: '200px',
-    Cell: () => <p>Links</p>
+    width:100,
+    disableSortBy: true,
+    Cell: ({value}) => (
+      <LinksContainer>
+        <a href={value?.homepage || "#"}><Button iconOnly type="button" variant="rounded" icon="homePage" /></a>
+        <a href={value?.repository || "#"}><Button iconOnly type="button" variant="rounded" icon="github" /></a>
+        <a href={value?.npm || "#"}><Button iconOnly type="button" variant="rounded" icon="npm" /></a>
+      </LinksContainer>
+    ),
   },
   {
     Header: 'Data',
     accessor: 'date',
     Cell: ({value}) => getFormattedDate(new Date(value as Date)),
-    // width: '100px',
+    width:100,
   },
 ] as Column<Package>[];
 
